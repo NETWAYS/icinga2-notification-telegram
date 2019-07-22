@@ -20,7 +20,7 @@ host-by-mail notification script for Icinga 2 by spillerm <github@spiller.me>
 
 The following are mandatory:
   -4 HOSTADDRESS (\$address$)
-  -6 HOSTADDRESS6 (\$address6\)
+  -6 HOSTADDRESS6 (\$address6$)
   -d LONGDATETIME (\$icinga.long_date_time$)
   -l HOSTALIAS (\$host.name$)
   -n HOSTDISPLAYNAME (\$host.display_name$)
