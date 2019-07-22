@@ -26,7 +26,7 @@ The following are mandatory:
   -n HOSTDISPLAYNAME (\$host.display_name$)
   -o HOSTOUTPUT (\$host.output$)
   -p TELEGRAM_BOT (\$telegram_bot$)
-  -q TELEGRAM_BOTID (\$telegram_botid$)
+  -q TELEGRAM_CHATID (\$telegram_chatid$)
   -r TELEGRAM_BOTTOKEN (\$telegram_bottoken$)
   -s HOSTSTATE (\$host.state$)
   -t NOTIFICATIONTYPE (\$notification.type$)
@@ -56,7 +56,7 @@ do
     n) HOSTDISPLAYNAME=$OPTARG ;;
     o) HOSTOUTPUT=$OPTARG ;;
     p) TELEGRAM_BOT=$OPTARG ;;
-    q) TELEGRAM_BOTID=$OPTARG ;;
+    q) TELEGRAM_CHATID=$OPTARG ;;
     r) TELEGRAM_BOTTOKEN=$OPTARG ;;
     s) HOSTSTATE=$OPTARG ;;
     t) NOTIFICATIONTYPE=$OPTARG ;;
