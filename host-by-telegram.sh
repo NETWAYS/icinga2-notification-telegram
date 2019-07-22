@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 ## /etc/icinga2/scripts/host-by-telegram.sh / 20170330
 ## Marianne M. Spiller <github@spiller.me>
-## Last updated 20170424
-## Tested icinga2-2.6.3-1
+## Last updated 20190722
+## Tested icinga2-2.10.3
 
 PROG="`basename $0`"
 HOSTNAME="`hostname`"
 TRANSPORT="curl"
+unset DEBUG
 
 if [ -z "`which $TRANSPORT`" ] ; then
   echo "$TRANSPORT not in \$PATH. Consider installing it."
@@ -36,13 +37,14 @@ And these are optional:
   -c NOTIFICATIONCOMMENT (\$notification.comment$)
   -i HAS_ICINGAWEB2 (\$icingaweb2url$, Default: unset)
   -v (\$notification_logtosyslog$, Default: false)
+  -D DEBUG enable debug output - meant for CLI debug only
 
 EOF
 
 exit 1;
 }
 
-while getopts 4:6::b:c:d:hi:l:n:o:p:q:r:s:t:u:v: opt
+while getopts 4:6::b:c:d:hi:l:n:o:p:q:r:s:t:u:v:D opt
 do
   case "$opt" in
     4) HOSTADDRESS=$OPTARG ;;
@@ -61,6 +63,7 @@ do
     s) HOSTSTATE=$OPTARG ;;
     t) NOTIFICATIONTYPE=$OPTARG ;;
     v) VERBOSE=$OPTARG ;;
+    D) DEBUG=1; echo -e "\n**********************************************\nWARNING: DEBUG MODE, DEACTIVATE ASAP\n**********************************************\n" ;;
    \?) echo "ERROR: Invalid option -$OPTARG" >&2
        Usage ;;
     :) echo "Missing option argument for -$OPTARG" >&2
@@ -108,10 +111,20 @@ if [ "$VERBOSE" == "true" ] ; then
   logger "$PROG sends $SUBJECT => Telegram Channel $TELEGRAM_BOT"
 fi
 
+## debug output or not
+if [ -z $DEBUG ];then
+    CURLARGS="--silent --output /dev/null"
+else
+    CURLARGS=-v
+    set -x
+    echo -e "DEBUG MODE!"
+fi
+
 ## And finally, send the message
-/usr/bin/curl --silent --output /dev/null \
---data-urlencode "chat_id=${TELEGRAM_BOTID}" \
---data-urlencode "text=${NOTIFICATION_MESSAGE}" \
---data-urlencode "parse_mode=HTML" \
---data-urlencode "disable_web_page_preview=true" \
-"https://api.telegram.org/bot${TELEGRAM_BOTTOKEN}/sendMessage"
+/usr/bin/curl $CURLARGS \
+    --data-urlencode "chat_id=${TELEGRAM_CHATID}" \
+    --data-urlencode "text=${NOTIFICATION_MESSAGE}" \
+    --data-urlencode "parse_mode=HTML" \
+    --data-urlencode "disable_web_page_preview=true" \
+    "https://api.telegram.org/bot${TELEGRAM_BOTTOKEN}/sendMessage"
+set +x
