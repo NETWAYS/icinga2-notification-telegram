@@ -107,7 +107,7 @@ object NotificationCommand "Notify Host By Telegram" {
             required = true
             value = "$notification.type$"
         }
-        "-v" = "$notification_logtosyslog$"
+        "-v" = "$telegram_notification_logtosyslog$"
     }
 }
 ```
@@ -166,7 +166,7 @@ object NotificationCommand "Notify Service By Telegram" {
             required = true
             value = "$service.display_name$"
         }
-        "-v" = "$notification_logtosyslog$"
+        "-v" = "$telegram_notification_logtosyslog$"
     }
 }
 ```
