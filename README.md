@@ -1,31 +1,28 @@
 # Notification by Telegram
-Send Icinga 2 notification via Telegram
+Sending Icinga 2 notifications via Telegram!
 
-![Telegram Notification](img/Telegram.png)
-
-
-## Prepare
-
+## Preparing
 ### Create your bot
+
+<img src="img/Telegram.png" width="25%" align="right">
 
 Obviously you need a bot to begin:
 
-Follow the [official Telegram guide](https://core.telegram.org/bots) and do not forget to grab your bot *API TOKEN* (referred to here as *BOTTOKEN*) afterwards
-
+Follow the [official Telegram guide](https://core.telegram.org/bots) and do not forget to grab your bot `API TOKEN` (referred to here as `BOTTOKEN`) afterwards
 
 ### Get your chat_id(s)
 
 You can notify a specific TG user account or throw a message to a TG group.
 
-In order to do so you need to know the corresponding (hidden) ID also called chat_id (-q TELEGRAM_CHATID).
+In order to do so you need to know the corresponding (hidden) ID also called `chat_id` (`-q TELEGRAM_CHATID`).
 
 If you want to notify a **group/channel**:
 
-1. add your bot to that group/channel
-1. send with your favorite client a simple mention msg to your bot (e.g. `hi @mybot`)
-1. catch updates for your bot:
+1. Add your bot to that group/channel
+1. Send with your favorite client a simple mention msg to your bot (e.g. `hi @mybot`)
+1. Catch updates for your bot:
 `curl https://api.telegram.org/bot<BOTTOKEN>/getUpdates`
-1. review the output, an example below:
+1. Review the output, an example below:
    > "message":{"message_id":91, "from":{"id":123456789, "is_bot":false,"first_name":"foo","username":"foobar","language_code":"de"}, "chat":{"id":-987654321, "title":"<GROUPNAME>","type":"group","all_members_are_administrators":true},"date":1563547428,"group_chat_created":true}}]}`
 
     There are 2 important parts here:
@@ -34,22 +31,19 @@ If you want to notify a **group/channel**:
 
 If you do not want to notify a group i.e. just **a direct user notification**:
 
-1. do the same as above, just at step 1 make a direct message to your bot instead
-1. as you have done a direct message you will only get a "from" id which is all you need here
+1. Do the same as above, just at step 1 make a direct message to your bot instead
+1. As you have done a direct message you will only get a "from" id which is all you need here
 
-
-# Examples
+## Examples
 
 ### Testing a notification
 
-sending a test notification (replace the token, botname and chat id obviously)
+Sending a test notification – replace the token, botname and chat id obviously.
 
 `sudo -u nagios ./service-by-telegram.sh -4 127.0.0.1 -l myhostname -o testingTGnotifiy -p <myBotname> -q <myGroupChatId> -r "<1234134325:blafasel>" -s CRITICAL -c mycomment -b mycommentuser -i https://myicingaserver/icingaweb2 -n maaaaaaaaaaa -d"$(date +%F-%T)" -e serviceshort -u fullservicename -D`
 
 
 ### Icinga2 objects
-
-
 #### Example Notification Object
 
 ```ini
