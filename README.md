@@ -93,7 +93,7 @@ object NotificationCommand "Notify Host By Telegram" {
         }
         "-q" = {
             required = true
-            value = "$telegram_botid$"
+            value = "$telegram_chatid$"
         }
         "-r" = {
             required = true
@@ -148,7 +148,7 @@ object NotificationCommand "Notify Service By Telegram" {
         }
         "-q" = {
             required = true
-            value = "$telegram_botid$"
+            value = "$telegram_chatid$"
         }
         "-r" = {
             required = true
