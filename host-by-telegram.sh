@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 ## /etc/icinga2/scripts/host-by-telegram.sh / 20170330
 ## Marianne M. Spiller <github@spiller.me>
-## Last updated 20190722
-## Tested icinga2-2.10.3
+## Last updated 20190820
+## Last tests used icinga2-2.10.5-1.stretch
 
 PROG="`basename $0`"
 HOSTNAME="`hostname`"
