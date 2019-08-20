@@ -14,7 +14,7 @@ apply Notification "Host by Telegram" to Host {
     users = [ "telegram_unixe" ]
     vars.notification_logtosyslog = true
     vars.telegram_bot = "<YOUR_TELEGRAM_BOT_NAME>"
-    vars.telegram_botid = "<YOUR_TELEGRAM_BOT_ID>"
+    vars.telegram_chatid = "<YOUR_TELEGRAM_CHAT_ID>"
     vars.telegram_bottoken = "<YOUR_TELEGRAM_BOT_TOKEN>"
 }
 ```
