@@ -326,4 +326,4 @@ apply Notification "Service Alerts via @telegram_bot" to Service {
 #### Related Director Baskets
 * [Just the Commands](contrib/Director-Basket_Telegram_Commands.json)
 * [Commands and Notification Templates with fields](contrib/Director-Basket_Telegram_Notifications.json)
-  (requires Director v1.8.0 or a master newer than [80f9ea2])(https://github.com/Icinga/icingaweb2-module-director/commit/80f9ea2)
+  (requires Director v1.8.0 or a master newer than [80f9ea2](https://github.com/Icinga/icingaweb2-module-director/commit/80f9ea2))
