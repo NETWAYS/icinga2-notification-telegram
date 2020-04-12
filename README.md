@@ -62,6 +62,41 @@ sudo -u nagios ./service-by-telegram.sh -4 127.0.0.1 \
 ```
 
 ### Icinga2 objects
+#### Example host objects
+<details>
+   <summary>Example host template</summary>
+
+```ini
+template Host "Generic Host Template" {
+  check_command = "hostalive"
+  max_check_attempts = "3"
+  check_interval = 1m
+  retry_interval = 1m
+  check_timeout = 30s
+  enable_notifications = true
+  enable_active_checks = true
+  enable_passive_checks = true
+  enable_event_handler = true
+  enable_flapping = true
+  enable_perfdata = true
+  volatile = false
+  vars.notification_type = "Telegram"
+}
+```
+</details>
+
+<details>
+   <summary>Example host object</summary>
+      
+```ini
+object Host "icinga2-master" {
+    import "Generic Host Template"
+    address = "127.0.0.1"
+}
+
+```
+</details>
+
 #### Example user templates
 <details>
    <summary>Generic user template</summary>
@@ -282,4 +317,9 @@ apply Notification "Service Alerts via @telegram_bot" to Service {
 
 
 #### Example Director screenshot
+<details>
+   <summary>Notifications by Telegram via Icinga Director</summary>
+   
 ![Icinga Director Config](img/Telegram_Notification_in_Icinga_Director.jpg)
+</details>
+
