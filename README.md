@@ -43,28 +43,54 @@ If you do not want to notify a group i.e. just **a direct user notification**:
 
 Sending a test notification – replace the token, botname and chat id obviously.
 
-`sudo -u nagios ./service-by-telegram.sh -4 127.0.0.1 -l myhostname -o testingTGnotifiy -p <myBotname> -q <myGroupChatId> -r "<1234134325:blafasel>" -s CRITICAL -c mycomment -b mycommentuser -i https://myicingaserver/icingaweb2 -n maaaaaaaaaaa -d"$(date +%F-%T)" -e serviceshort -u fullservicename -D`
-
-
-### Icinga2 objects
-#### Example Notification Object
-
-```ini
-apply Notification "Host by Telegram" to Host {
-    command = "Notify Host By Telegram"
-    interval = 1h
-    assign where host.vars.notification_type == "Telegram"
-    users = [ "telegram_unixe" ]
-    vars.notification_logtosyslog = true
-    vars.telegram_bot = "<YOUR_TELEGRAM_BOT_NAME>"
-    vars.telegram_chatid = "<YOUR_TELEGRAM_CHAT_ID>"
-    vars.telegram_bottoken = "<YOUR_TELEGRAM_BOT_TOKEN>"
-}
+```
+sudo -u nagios ./service-by-telegram.sh -4 127.0.0.1 \
+-l myhostname \
+-o testingTGnotifiy \
+-p <myBotname> \
+-q <myGroupChatId> \
+-r "<1234134325:blafasel>" \
+-s CRITICAL \
+-c mycomment \
+-b mycommentuser \
+-i https://myicingaserver/icingaweb2 \
+-n maaaaaaaaaaa \
+-d"$(date +%F-%T)" \
+-e serviceshort \
+-u fullservicename \
+-D
 ```
 
-#### Example Command Definitions
+### Icinga2 objects
+#### Example user templates
 <details>
-   <summary>object NotificationCommand "Notify Host By Telegram"</summary>
+   <summary>Generic user template</summary>
+
+```ini
+template User "Generic User Template" {
+    enable_notifications = true
+}
+```
+</details>
+
+<details>
+   <summary>User "telegram_bot"</summary>
+
+```ini
+object User "telegram_bot" {
+    import "Generic User Template"
+
+    display_name = "Bot via Telegram"
+    email = "you@yourdomain.tld"
+    states = [ Critical, Down, OK, Unknown, Up, Warning ]
+    types = [ Custom, Problem, Recovery ]
+}
+```
+</details>
+
+#### Example command definitions
+<details>
+   <summary>Notification Command: Hosts by Telegram</summary>
 
 ```ini
 object NotificationCommand "Notify Host By Telegram" {
@@ -116,11 +142,10 @@ object NotificationCommand "Notify Host By Telegram" {
     }
 }
 ```
-
 </details>
 
 <details>
-   <summary>object NotificationCommand "Notify Service By Telegram"</summary>
+   <summary>Notification Command: Services by Telegram</summary>
 
 ```ini
 object NotificationCommand "Notify Service By Telegram" {
@@ -180,9 +205,81 @@ object NotificationCommand "Notify Service By Telegram" {
     }
 }
 ```
-
 </details>
-   
-#### Example Director config
 
+#### Example notification objects
+<!-- NOTIFICATION TEMPLATE TELEGRAM GENERIC -->
+<details>
+   <summary>Notification Template: Telegram Generic</summary>
+
+```ini
+template Notification "Template: Telegram (Generic)" {
+    vars.telegram_bot = "<YOUR_TELEGRAM_BOT_NAME>"
+    vars.telegram_bottoken = "<YOUR_TELEGRAM_BOT_TOKEN>"
+    vars.telegram_chatid = "<YOUR_TELEGRAM_CHAT_ID>"
+    vars.telegram_notification_logtosyslog = true
+}
+```
+</details>
+
+<details>
+   <summary>Notification Template: Host Notifications</summary>
+   
+```ini
+template Notification "Template: Host Notifications via Telegram" {
+    import "Template: Telegram (Generic)"
+
+    command = "Notify Host By Telegram"
+    interval = 1h
+}
+```
+</details>
+
+<details>
+   <summary>Notification Template: Service Notifications</summary>
+   
+```ini
+template Notification "Template: Service Notifications via Telegram" {
+    import "Template: Telegram (Generic)"
+
+    command = "Notify Service By Telegram"
+    interval = 4h
+}
+```
+</details>
+
+
+#### Example notification apply rules
+<details>
+   <summary>Apply rule for host notifications</summary>
+ 
+```ini
+   apply Notification "Host Alert via @telegram_bot" to Host {
+    import "Template: Host Notifications via Telegram"
+
+    interval = 1h
+    assign where host.vars.notification_type == "Telegram"
+    states = [ Down, Up ]
+    types = [ Custom, Problem, Recovery ]
+    users = [ "telegram_bot" ]
+}
+```
+</details>
+
+<details>
+   <summary>Apply rule for service notifications</summary>
+   
+```ini
+apply Notification "Service Alerts via @telegram_bot" to Service {
+  import "Template: Service Notifications via Telegram"
+
+  interval = 12h
+  assign where host.vars.notification_type == "Telegram"
+  users = [ "telegram_bot" ]
+}
+```
+</details>
+
+
+#### Example Director screenshot
 ![Icinga Director Config](img/Telegram_Notification_in_Icinga_Director.jpg)
