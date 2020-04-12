@@ -1,7 +1,7 @@
 # Notification by Telegram
 Sending Icinga 2 notifications via Telegram!
 
-Special thanks to contributing [steadfasterX](https://github.com/steadfasterX) :-)
+Special thanks to contributing [steadfasterX](https://github.com/steadfasterX) and [Tom](https://github.com/Thomas-Gelf) :-)
 
 
 ## Preparing
