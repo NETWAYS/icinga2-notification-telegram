@@ -1,0 +1,294 @@
+{
+    "Command": {
+        "Notify Service By Telegram": {
+            "arguments": {
+                "-6": {
+                    "value": "$address6$"
+                },
+                "-4": {
+                    "required": true,
+                    "value": "$address$"
+                },
+                "-b": {
+                    "value": "$notification.author$"
+                },
+                "-c": {
+                    "value": "$notification.comment$"
+                },
+                "-d": {
+                    "required": true,
+                    "value": "$icinga.long_date_time$"
+                },
+                "-e": {
+                    "required": true,
+                    "value": "$service.name$"
+                },
+                "-i": {
+                    "value": "$icingaweb2url$"
+                },
+                "-l": {
+                    "required": true,
+                    "value": "$host.name$"
+                },
+                "-n": {
+                    "value": "$host.display_name$"
+                },
+                "-o": {
+                    "required": true,
+                    "value": "$service.output$"
+                },
+                "-p": {
+                    "required": true,
+                    "value": "$telegram_bot$"
+                },
+                "-q": {
+                    "required": true,
+                    "value": "$telegram_chatid$"
+                },
+                "-r": {
+                    "required": true,
+                    "value": "$telegram_bottoken$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$service.state$"
+                },
+                "-t": {
+                    "required": true,
+                    "value": "$notification.type$"
+                },
+                "-u": {
+                    "required": true,
+                    "value": "$service.display_name$"
+                },
+                "-v": {
+                    "value": "$telegram_notification_logtosyslog$"
+                }
+            },
+            "command": "\/etc\/icinga2\/scripts\/service-by-telegram.sh",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "Notify Service By Telegram",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {},
+            "zone": null
+        },
+        "Notify Host By Telegram": {
+            "arguments": {
+                "-6": {
+                    "value": "$address6$"
+                },
+                "-4": {
+                    "required": true,
+                    "value": "$address$"
+                },
+                "-b": {
+                    "value": "$notification.author$"
+                },
+                "-c": {
+                    "value": "$notification.comment$"
+                },
+                "-d": {
+                    "required": true,
+                    "value": "$icinga.long_date_time$"
+                },
+                "-i": {
+                    "value": "$icingaweb2url$"
+                },
+                "-l": {
+                    "required": true,
+                    "value": "$host.name$"
+                },
+                "-n": {
+                    "value": "$host.display_name$"
+                },
+                "-o": {
+                    "required": true,
+                    "value": "$host.output$"
+                },
+                "-p": {
+                    "required": true,
+                    "value": "$telegram_bot$"
+                },
+                "-q": {
+                    "required": true,
+                    "value": "$telegram_chatid$"
+                },
+                "-r": {
+                    "required": true,
+                    "value": "$telegram_bottoken$"
+                },
+                "-s": {
+                    "required": true,
+                    "value": "$host.state$"
+                },
+                "-t": {
+                    "required": true,
+                    "value": "$notification.type$"
+                },
+                "-v": {
+                    "value": "$telegram_notification_logtosyslog$"
+                }
+            },
+            "command": "\/etc\/icinga2\/scripts\/host-by-telegram.sh",
+            "disabled": false,
+            "fields": [],
+            "imports": [],
+            "is_string": null,
+            "methods_execute": "PluginNotification",
+            "object_name": "Notify Host By Telegram",
+            "object_type": "object",
+            "timeout": "60",
+            "vars": {},
+            "zone": null
+        }
+    },
+    "NotificationTemplate": {
+        "Service by Telegram": {
+            "apply_to": null,
+            "assign_filter": null,
+            "command": "Notify Service By Telegram",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 122,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 119,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 121,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 120,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "host": null,
+            "imports": [],
+            "notification_interval": "1800",
+            "object_name": "Service by Telegram",
+            "object_type": "template",
+            "period": null,
+            "service": null,
+            "states": [
+                "Critical",
+                "OK",
+                "Unknown",
+                "Warning"
+            ],
+            "times_begin": null,
+            "times_end": null,
+            "types": null,
+            "user_groups": [],
+            "users": [],
+            "vars": {
+                "notification_logtosyslog": false
+            },
+            "zone": null
+        },
+        "Host by Telegram": {
+            "apply_to": null,
+            "assign_filter": null,
+            "command": "Notify Host By Telegram",
+            "disabled": false,
+            "fields": [
+                {
+                    "datafield_id": 122,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 119,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 121,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 120,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "host": null,
+            "imports": [],
+            "notification_interval": "1800",
+            "object_name": "Host by Telegram",
+            "object_type": "template",
+            "period": null,
+            "service": null,
+            "states": [
+                "Down",
+                "Up"
+            ],
+            "times_begin": null,
+            "times_end": null,
+            "types": null,
+            "user_groups": [],
+            "users": [],
+            "vars": {
+                "notification_logtosyslog": false
+            },
+            "zone": null
+        }
+    },
+    "Datafield": {
+        "122": {
+            "varname": "notification_logtosyslog",
+            "caption": "Log to Syslog",
+            "description": "Whether notifications should be logged to Syslog",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "originalId": "122",
+            "settings": {}
+        },
+        "119": {
+            "varname": "telegram_bot",
+            "caption": "Telegram Bot Channel",
+            "description": "Your Telegram bot name",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "119",
+            "settings": {
+                "visibility": "visible"
+            }
+        },
+        "121": {
+            "varname": "telegram_bottoken",
+            "caption": "Telegram Bot Token",
+            "description": "Your Telegram bot API token",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "121",
+            "settings": {
+                "visibility": "hidden"
+            }
+        },
+        "120": {
+            "varname": "telegram_chatid",
+            "caption": "Telegram Bot Chat ID",
+            "description": null,
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "originalId": "120",
+            "settings": {
+                "visibility": "visible"
+            }
+        }
+    }
+}
