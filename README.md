@@ -63,6 +63,8 @@ apply Notification "Host by Telegram" to Host {
 ```
 
 #### Example Command Definitions
+<details>
+   <summary>object NotificationCommand "Notify Host By Telegram"</summary>
 
 ```ini
 object NotificationCommand "Notify Host By Telegram" {
@@ -114,6 +116,11 @@ object NotificationCommand "Notify Host By Telegram" {
     }
 }
 ```
+
+</details>
+
+<details>
+   <summary>object NotificationCommand "Notify Service By Telegram"</summary>
 
 ```ini
 object NotificationCommand "Notify Service By Telegram" {
@@ -173,6 +180,9 @@ object NotificationCommand "Notify Service By Telegram" {
     }
 }
 ```
+
+</details>
+   
 #### Example Director config
 
 ![Icinga Director Config](img/Telegram_Notification_in_Icinga_Director.jpg)
