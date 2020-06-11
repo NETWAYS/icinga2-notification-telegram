@@ -3,7 +3,6 @@ Sending Icinga 2 notifications via Telegram!
 
 Special thanks to contributing [steadfasterX](https://github.com/steadfasterX) and [Tom](https://github.com/Thomas-Gelf) :-)
 
-
 ## Preparing
 ### Create your bot
 
@@ -44,7 +43,8 @@ If you do not want to notify a group i.e. just **a direct user notification**:
 Sending a test notification – replace the token, botname and chat id obviously.
 
 ```
-sudo -u nagios ./service-by-telegram.sh -4 127.0.0.1 \
+sudo -u nagios ./alert-by-telegram.sh -4 127.0.0.1 \
+-a service \
 -l myhostname \
 -o testingTGnotifiy \
 -p <myBotname> \
@@ -87,7 +87,7 @@ template Host "Generic Host Template" {
 
 <details>
    <summary>Example host object</summary>
-      
+
 ```ini
 object Host "icinga2-master" {
     import "Generic Host Template"
@@ -130,13 +130,14 @@ object User "telegram_bot" {
 ```ini
 object NotificationCommand "Notify Host By Telegram" {
     import "plugin-notification-command"
-    command = [ "/etc/icinga2/scripts/host-by-telegram.sh" ]
+    command = [ "/etc/icinga2/scripts/alert-by-telegram.sh" ]
     arguments += {
         "-4" = {
             required = true
             value = "$address$"
         }
         "-6" = "$address6$"
+        "-a" = "host"
         "-b" = "$notification.author$"
         "-c" = "$notification.comment$"
         "-d" = {
@@ -185,13 +186,14 @@ object NotificationCommand "Notify Host By Telegram" {
 ```ini
 object NotificationCommand "Notify Service By Telegram" {
     import "plugin-notification-command"
-    command = [ "/etc/icinga2/scripts/service-by-telegram.sh" ]
+    command = [ "/etc/icinga2/scripts/alert-by-telegram.sh" ]
     arguments += {
         "-4" = {
             required = true
             value = "$address$"
         }
         "-6" = "$address6$"
+        "-a" = "service"
         "-b" = "$notification.author$"
         "-c" = "$notification.comment$"
         "-d" = {
@@ -259,7 +261,7 @@ template Notification "Template: Telegram (Generic)" {
 
 <details>
    <summary>Notification Template: Host Notifications</summary>
-   
+
 ```ini
 template Notification "Template: Host Notifications via Telegram" {
     import "Template: Telegram (Generic)"
@@ -272,7 +274,7 @@ template Notification "Template: Host Notifications via Telegram" {
 
 <details>
    <summary>Notification Template: Service Notifications</summary>
-   
+
 ```ini
 template Notification "Template: Service Notifications via Telegram" {
     import "Template: Telegram (Generic)"
@@ -283,11 +285,10 @@ template Notification "Template: Service Notifications via Telegram" {
 ```
 </details>
 
-
 #### Example notification apply rules
 <details>
    <summary>Apply rule for host notifications</summary>
- 
+
 ```ini
    apply Notification "Host Alert via @telegram_bot" to Host {
     import "Template: Host Notifications via Telegram"
@@ -303,7 +304,7 @@ template Notification "Template: Service Notifications via Telegram" {
 
 <details>
    <summary>Apply rule for service notifications</summary>
-   
+
 ```ini
 apply Notification "Service Alerts via @telegram_bot" to Service {
   import "Template: Service Notifications via Telegram"
@@ -315,11 +316,10 @@ apply Notification "Service Alerts via @telegram_bot" to Service {
 ```
 </details>
 
-
 #### Example Director screenshot
 <details>
    <summary>Notifications by Telegram via Icinga Director</summary>
-   
+
 ![Icinga Director Config](img/Telegram_Notification_in_Icinga_Director.jpg)
 </details>
 
