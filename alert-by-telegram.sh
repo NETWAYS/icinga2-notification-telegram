@@ -20,15 +20,12 @@ cat << EOF
 alert-by-telegram notification script for Icinga 2 by spillerm <github@spiller.me>
 
 The following are mandatory:
-  -4 HOSTADDRESS (\$address$)
-  -6 HOSTADDRESS6 (\$address6$)
   -a ALERTTYPE (host or service)
   -d LONGDATETIME (\$icinga.long_date_time$)
   -e SERVICENAME (\$service.name$ Only if ALERTTYPE is service) # TODO, currently unused
   -l HOSTALIAS (\$host.name$)
   -n HOSTDISPLAYNAME (\$host.display_name$)
   -o SERVICEOUTPUT (\$service.output$ or \$host.output$)
-  -p TELEGRAM_BOT (\$telegram_bot$)
   -q TELEGRAM_CHATID (\$telegram_chatid$)
   -r TELEGRAM_BOTTOKEN (\$telegram_bottoken$)
   -s SERVICESTATE (\$service.state$ or \$host.state$)
@@ -36,10 +33,13 @@ The following are mandatory:
   -u SERVICEDISPLAYNAME (\$service.display_name$)
 
 And these are optional:
+  -4 HOSTADDRESS (\$address$)
+  -6 HOSTADDRESS6 (\$address6$)
   -b NOTIFICATIONAUTHORNAME (\$notification.author$)
   -c NOTIFICATIONCOMMENT (\$notification.comment$)
   -i HAS_ICINGAWEB2 (\$icingaweb2url$, Default: unset)
   -v (\$notification_logtosyslog$, Default: false)
+  -p TELEGRAM_BOT (\$telegram_bot$)
   -D DEBUG enable debug output - meant for CLI debug only
 EOF
 }
@@ -91,9 +91,9 @@ else
 	fi
 fi
 
-if [[ -z ${HOSTADDRESS-} ]]         || [[ -z ${HOSTADDRESS6-} ]]    || [[ -z ${LONGDATETIME-} ]]     || [[ -z ${HOSTALIAS-} ]] \
-	|| [[ -z ${HOSTDISPLAYNAME-} ]]   || [[ -z ${SERVICEOUTPUT-} ]]   || [[ -z ${TELEGRAM_BOT-} ]]     || [[ -z ${TELEGRAM_CHATID-} ]] \
-	|| [[ -z ${TELEGRAM_BOTTOKEN-} ]] || [[ -z ${SERVICESTATE-} ]]    || [[ -z ${NOTIFICATIONTYPE-} ]]; then
+if [[ -z ${LONGDATETIME-} ]]      || [[ -z ${HOSTALIAS-} ]]       || [[ -z ${HOSTDISPLAYNAME-} ]] \
+	|| [[ -z ${SERVICEOUTPUT-} ]]   || [[ -z ${TELEGRAM_CHATID-} ]] || [[ -z ${TELEGRAM_BOTTOKEN-} ]] \
+	|| [[ -z ${SERVICESTATE-} ]]    || [[ -z ${NOTIFICATIONTYPE-} ]]; then
 	Usage
 	exit 1
 fi
@@ -108,49 +108,51 @@ fi
 ## Build the message itself
 if [[ $ALERTTYPE == "host" ]]; then
 	NOTIFICATION_MESSAGE=$(cat << EOF
-$HOSTDISPLAYNAME ($HOSTALIAS) is $SERVICESTATE!
-When?    $LONGDATETIME
-Info?    $SERVICEOUTPUT
-Host?    $HOSTALIAS
-IPv4?    $HOSTADDRESS
+<u>[$SERVICESTATE] $HOSTDISPLAYNAME ($HOSTALIAS) - at $LONGDATETIME</u>
 EOF
 )
 else
 	NOTIFICATION_MESSAGE=$(cat << EOF
-[$SERVICESTATE] $SERVICEDISPLAYNAME is $SERVICESTATE since $LONGDATETIME
-Host: $HOSTALIAS (IPv4 $HOSTADDRESS)
-More info: $SERVICEOUTPUT
+<u>[$SERVICESTATE] $SERVICEDISPLAYNAME - at $LONGDATETIME</u>
+<b>Host:</b> <code>$HOSTALIAS</code>
 EOF
 )
 fi
 
-## Is this host IPv6 capable?
-if [ -n "$HOSTADDRESS6" ]; then
+if [[ -n "${HOSTADDRESS-}" ]]; then
 	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-IPv6?    $HOSTADDRESS6"
+<b>IPv4:</b> <code>$HOSTADDRESS</code>"
 fi
 
-## Are there any comments? Put them into the message!
-if [ -n "${NOTIFICATIONCOMMENT-}" ] ; then
+if [[ -n "${HOSTADDRESS6-}" ]]; then
 	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-Comment by $NOTIFICATIONAUTHORNAME:
-  $NOTIFICATIONCOMMENT"
+<b>IPv6:</b> <code>$HOSTADDRESS6</code>"
+fi
+
+NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
+
+<b>Output:</b> <code>$SERVICEOUTPUT</code>"
+
+## Are there any comments? Put them into the message!
+if [[ -n "${NOTIFICATIONCOMMENT-}" ]] ; then
+	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
+
+<b>Comment by $NOTIFICATIONAUTHORNAME:</b> <code>$NOTIFICATIONCOMMENT</code>"
 fi
 
 ## Are we using Icinga Web 2? Put the URL into the message!
-if [ -n "${HAS_ICINGAWEB2-}" ] ; then
+if [[ -n "${HAS_ICINGAWEB2-}" ]] ; then
 	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
-Get live status:
-  $HAS_ICINGAWEB2/monitoring/host/show?host=$HOSTALIAS"
+<b>Get live status:</b> <code>$HAS_ICINGAWEB2/monitoring/host/show?host=$HOSTALIAS</code>"
 fi
 
 ## Are we verbose? Then put a message to syslog...
-if [ "${VERBOSE-}" == "true" ] ; then
+if [[ "${VERBOSE-}" == "true" ]] ; then
 	logger "$PROG sends $SUBJECT => Telegram Channel $TELEGRAM_BOT"
 fi
 
 ## debug output or not?
-if [ -z ${DEBUG-} ]; then
+if [[ -z ${DEBUG-} ]]; then
 	CURLARGS="--silent --output /dev/null"
 else
 	CURLARGS=-v
