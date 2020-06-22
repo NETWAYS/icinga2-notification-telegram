@@ -87,7 +87,7 @@ template Host "Generic Host Template" {
 
 <details>
    <summary>Example host object</summary>
-      
+
 ```ini
 object Host "icinga2-master" {
     import "Generic Host Template"
@@ -259,7 +259,7 @@ template Notification "Template: Telegram (Generic)" {
 
 <details>
    <summary>Notification Template: Host Notifications</summary>
-   
+
 ```ini
 template Notification "Template: Host Notifications via Telegram" {
     import "Template: Telegram (Generic)"
@@ -272,7 +272,7 @@ template Notification "Template: Host Notifications via Telegram" {
 
 <details>
    <summary>Notification Template: Service Notifications</summary>
-   
+
 ```ini
 template Notification "Template: Service Notifications via Telegram" {
     import "Template: Telegram (Generic)"
@@ -287,7 +287,7 @@ template Notification "Template: Service Notifications via Telegram" {
 #### Example notification apply rules
 <details>
    <summary>Apply rule for host notifications</summary>
- 
+
 ```ini
    apply Notification "Host Alert via @telegram_bot" to Host {
     import "Template: Host Notifications via Telegram"
@@ -303,7 +303,7 @@ template Notification "Template: Service Notifications via Telegram" {
 
 <details>
    <summary>Apply rule for service notifications</summary>
-   
+
 ```ini
 apply Notification "Service Alerts via @telegram_bot" to Service {
   import "Template: Service Notifications via Telegram"
@@ -319,7 +319,7 @@ apply Notification "Service Alerts via @telegram_bot" to Service {
 #### Example Director screenshot
 <details>
    <summary>Notifications by Telegram via Icinga Director</summary>
-   
+
 ![Icinga Director Config](img/Telegram_Notification_in_Icinga_Director.jpg)
 </details>
 
@@ -327,3 +327,20 @@ apply Notification "Service Alerts via @telegram_bot" to Service {
 * [Just the Commands](contrib/Director-Basket_Telegram_Commands.json)
 * [Commands and Notification Templates with fields](contrib/Director-Basket_Telegram_Notifications.json)
   (requires Director v1.8.0 or a master newer than [80f9ea2](https://github.com/Icinga/icingaweb2-module-director/commit/80f9ea2))
+
+## License
+
+Copyright (C) 2018 Marianne M. Spiller <github@spiller.me>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
