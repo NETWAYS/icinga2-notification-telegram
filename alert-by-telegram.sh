@@ -130,10 +130,10 @@ NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
 <b>Output:</b> <code>$SERVICEOUTPUT</code>"
 
 # Are there any comments? Put them into the message!
-if [[ -n "${NOTIFICATIONCOMMENT-}" ]] ; then
+if [[ -n "${NOTIFICATIONCOMMENT-}" ]]; then
 	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
 
-<b>Comment by $NOTIFICATIONAUTHORNAME:</b> <code>$NOTIFICATIONCOMMENT</code>"
+<b>Comment by ${NOTIFICATIONAUTHORNAME-ErrorUnknownAuthor}:</b> <code>$NOTIFICATIONCOMMENT</code>"
 fi
 
 # Are we using Icinga Web 2? Put the URL into the message!
