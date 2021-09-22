@@ -1,9 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
-# /etc/icinga2/scripts/service-by-telegram.sh
-# Marianne M. Spiller <github@spiller.me>
-# Last updated 2020-06-11
-# Last tests used icinga2-2.11.2-1.buster
 
 PROG="$(basename $0)"
 HOSTNAME="$(hostname)"
@@ -17,7 +13,7 @@ fi
 
 Usage() {
 cat << EOF
-alert-by-telegram notification script for Icinga 2 by spillerm <github@spiller.me>
+alert-by-telegram notification script for Icinga 2
 
 The following are mandatory:
   -a ALERTTYPE (host or service)
@@ -98,14 +94,14 @@ if [[ -z ${LONGDATETIME-} ]]      || [[ -z ${HOSTALIAS-} ]]       || [[ -z ${HOS
 	exit 1
 fi
 
-## Build the message's subject
+# Build the message's subject
 if [[ $ALERTTYPE == "host" ]]; then
 	SUBJECT="[$NOTIFICATIONTYPE] Host $HOSTDISPLAYNAME is $SERVICESTATE!"
 else
 	SUBJECT="[$NOTIFICATIONTYPE] $SERVICEDISPLAYNAME on $HOSTDISPLAYNAME is $SERVICESTATE!"
 fi
 
-## Build the message itself
+# Build the message itself
 if [[ $ALERTTYPE == "host" ]]; then
 	NOTIFICATION_MESSAGE=$(cat << EOF
 <u>[$SERVICESTATE] $HOSTDISPLAYNAME ($HOSTALIAS) - at $LONGDATETIME</u>
@@ -133,25 +129,25 @@ NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
 
 <b>Output:</b> <code>$SERVICEOUTPUT</code>"
 
-## Are there any comments? Put them into the message!
+# Are there any comments? Put them into the message!
 if [[ -n "${NOTIFICATIONCOMMENT-}" ]] ; then
 	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
 
 <b>Comment by $NOTIFICATIONAUTHORNAME:</b> <code>$NOTIFICATIONCOMMENT</code>"
 fi
 
-## Are we using Icinga Web 2? Put the URL into the message!
+# Are we using Icinga Web 2? Put the URL into the message!
 if [[ -n "${HAS_ICINGAWEB2-}" ]] ; then
 	NOTIFICATION_MESSAGE="$NOTIFICATION_MESSAGE
 <b>Get live status:</b> <code>$HAS_ICINGAWEB2/monitoring/host/show?host=$HOSTALIAS</code>"
 fi
 
-## Are we verbose? Then put a message to syslog...
+# Are we verbose? Then put a message to syslog...
 if [[ "${VERBOSE-}" == "true" ]] ; then
 	logger "$PROG sends $SUBJECT => Telegram Channel $TELEGRAM_BOT"
 fi
 
-## debug output or not?
+# Debug output or not?
 if [[ -z ${DEBUG-} ]]; then
 	CURLARGS="--silent --output /dev/null"
 else
@@ -160,7 +156,7 @@ else
 	echo -e "DEBUG MODE!"
 fi
 
-## And finally, send the message
+# And finally, send the message
 /usr/bin/curl $CURLARGS \
 	--data-urlencode "chat_id=${TELEGRAM_CHATID}" \
 	--data-urlencode "text=${NOTIFICATION_MESSAGE}" \

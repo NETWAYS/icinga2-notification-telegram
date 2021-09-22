@@ -1,14 +1,11 @@
 # Notification by Telegram
-Sending Icinga 2 notifications via Telegram!
-
-Special thanks to contributing [steadfasterX](https://github.com/steadfasterX) and [Tom](https://github.com/Thomas-Gelf) :-)
-
+Send Icinga 2 notifications via Telegram.
 ## Preparing
 ### Create your bot
 
 <img src="img/Telegram.png" width="25%" align="right">
 
-Obviously you need a bot to begin:
+You need a bot to begin:
 
 Follow the [official Telegram guide](https://core.telegram.org/bots) and do not forget to grab your bot `API TOKEN` (referred to here as `BOTTOKEN`) afterwards
 
