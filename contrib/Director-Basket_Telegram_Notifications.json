@@ -9,6 +9,9 @@
                     "required": true,
                     "value": "$address$"
                 },
+                "-a": {
+                    "value": "service"
+                },
                 "-b": {
                     "value": "$notification.author$"
                 },
@@ -85,6 +88,9 @@
                 "-4": {
                     "required": true,
                     "value": "$address$"
+                },
+                "-a": {
+                    "value": "host"
                 },
                 "-b": {
                     "value": "$notification.author$"
