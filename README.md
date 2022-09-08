@@ -1,13 +1,15 @@
 # Notification by Telegram
 Send Icinga 2 notifications via Telegram.
+
 ## Preparing
-### Create your bot
+
+### Create your Bot
 
 <img src="img/Telegram.png" width="25%" align="right">
 
 You need a bot to begin:
 
-Follow the [official Telegram guide](https://core.telegram.org/bots) and do not forget to grab your bot `API TOKEN` (referred to here as `BOTTOKEN`) afterwards
+Follow the [official Telegram guide](https://core.telegram.org/bots) and do not forget to grab your bot `API TOKEN` (referred to here as `BOT_TOKEN`) afterwards
 
 ### Get your chat_id(s)
 
@@ -20,7 +22,7 @@ If you want to notify a **group/channel**:
 1. Add your bot to that group/channel
 1. Send with your favorite client a simple mention msg to your bot (e.g. `hi @mybot`)
 1. Catch updates for your bot:
-`curl https://api.telegram.org/bot<BOTTOKEN>/getUpdates`
+`curl https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
 1. Review the output, an example below:
    > "message":{"message_id":91, "from":{"id":123456789, "is_bot":false,"first_name":"foo","username":"foobar","language_code":"de"}, "chat":{"id":-987654321, "title":"<GROUPNAME>","type":"group","all_members_are_administrators":true},"date":1563547428,"group_chat_created":true}}]}`
 
@@ -42,20 +44,20 @@ Sending a test notification – replace the token, botname and chat id obviously
 ```
 sudo -u nagios ./alert-by-telegram.sh -4 127.0.0.1 \
 -a service \
--l myhostname \
--o testingTGnotifiy \
--p <myBotname> \
--q <myGroupChatId> \
--r "<1234134325:blafasel>" \
--s CRITICAL \
--c mycomment \
--b mycommentuser \
--i https://myicingaserver/icingaweb2 \
--n maaaaaaaaaaa \
 -d"$(date +%F-%T)" \
 -e serviceshort \
--u fullservicename \
--D
+-l myhostalias \
+-o testing-telegram-notifiy \
+-p $BOT_NAME> \
+-q $GROUP_CHAT_ID \
+-r $BOT_TOKEN \
+-c mycomment \
+-b mycommentauthor \
+-i https://myicingaserver/icingaweb2 \
+-n myhostdisplayname \
+-s CRITICAL \
+-t PROBLEM \
+-u fullservicename
 ```
 
 ### Icinga2 objects
