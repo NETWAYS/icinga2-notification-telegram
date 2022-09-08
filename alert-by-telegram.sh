@@ -16,7 +16,7 @@ set -euo pipefail
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PROG="$(basename $0)"
+PROG="$(basename "$0")"
 HOSTNAME="$(hostname)"
 TRANSPORT="curl"
 unset DEBUG
@@ -119,13 +119,20 @@ fi
 # Build the message itself
 if [[ $ALERTTYPE == "host" ]]; then
 	NOTIFICATION_MESSAGE=$(cat << EOF
-<u>[$SERVICESTATE] $HOSTDISPLAYNAME ($HOSTALIAS) - at $LONGDATETIME</u>
+<u>$SUBJECT</u>
+
+$HOSTDISPLAYNAME ($HOSTALIAS) is <strong>$SERVICESTATE</strong> - at $LONGDATETIME
+
 EOF
 )
 else
 	NOTIFICATION_MESSAGE=$(cat << EOF
-<u>[$SERVICESTATE] $SERVICEDISPLAYNAME - at $LONGDATETIME</u>
-<b>Host:</b> <code>$HOSTALIAS</code>
+<u>$SUBJECT</u>
+
+$SERVICEDISPLAYNAME is <strong>$SERVICESTATE</strong> at $LONGDATETIME
+
+<strong>Host:</strong> <code>$HOSTALIAS</code>
+
 EOF
 )
 fi
