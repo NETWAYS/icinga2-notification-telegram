@@ -179,7 +179,7 @@ else
 fi
 
 # And finally, send the message
-/usr/bin/curl $CURLARGS \
+/usr/bin/curl "${CURLARGS}" \
 	--data-urlencode "chat_id=${TELEGRAM_CHATID}" \
 	--data-urlencode "text=${NOTIFICATION_MESSAGE}" \
 	--data-urlencode "parse_mode=HTML" \
