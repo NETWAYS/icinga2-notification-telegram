@@ -171,15 +171,15 @@ fi
 
 # Debug output or not?
 if [[ -z ${DEBUG-} ]]; then
-	CURLARGS="--silent --output /dev/null"
+	CURLARGS=(--silent --output /dev/null)
 else
-	CURLARGS=-v
+	CURLARGS=(-v)
 	set -x
 	echo -e "DEBUG MODE!"
 fi
 
 # And finally, send the message
-/usr/bin/curl "${CURLARGS}" \
+/usr/bin/curl "${CURLARGS[@]}" \
 	--data-urlencode "chat_id=${TELEGRAM_CHATID}" \
 	--data-urlencode "text=${NOTIFICATION_MESSAGE}" \
 	--data-urlencode "parse_mode=HTML" \
