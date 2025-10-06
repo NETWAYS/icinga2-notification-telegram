@@ -13,7 +13,7 @@ Follow the [official Telegram guide](https://core.telegram.org/bots) and do not 
 
 ### Get your chat_id(s)
 
-You can notify a specific TG user account or throw a message to a TG group.
+You can notify a specific Telegram user account or throw a message to a Telegram group.
 
 In order to do so you need to know the corresponding (hidden) ID also called `chat_id` (`-q TELEGRAM_CHATID`).
 
@@ -47,7 +47,7 @@ sudo -u nagios ./alert-by-telegram.sh -4 127.0.0.1 \
 -d"$(date +%F-%T)" \
 -e serviceshort \
 -l myhostalias \
--o testing-telegram-notifiy \
+-o testing-telegram-notify \
 -p $BOT_NAME> \
 -q $GROUP_CHAT_ID \
 -r $BOT_TOKEN \
