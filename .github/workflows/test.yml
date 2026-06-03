@@ -1,7 +1,7 @@
 name: Test
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags:
       - v*
   pull_request:
@@ -9,10 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca
       env:
